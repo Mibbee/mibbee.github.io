@@ -1,4 +1,3 @@
-Une astuce simple mais très efficace
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
