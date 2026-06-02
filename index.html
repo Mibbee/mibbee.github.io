@@ -2,583 +2,207 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Transformer les réponses IA en pages HTML lisibles</title>
+  <title>Astuce IA : transformer les réponses en pages HTML</title>
   <style>
-    :root {
-      --bg: #f5f7fb;
-      --card: #ffffff;
-      --text: #152033;
-      --muted: #5f6f89;
-      --primary: #2563eb;
-      --primary-dark: #1d4ed8;
-      --accent: #06b6d4;
-      --success: #16a34a;
-      --warning: #f59e0b;
-      --danger: #dc2626;
-      --border: #dbe3f0;
-      --shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
-      --radius: 22px;
+    :root{
+      --bg:#f4f7fb;--card:#fff;--text:#152033;--muted:#64748b;--blue:#2563eb;--dark:#0f172a;
+      --cyan:#06b6d4;--green:#16a34a;--orange:#f59e0b;--red:#dc2626;--border:#dbe3f0;
+      --shadow:0 18px 45px rgba(15,23,42,.08);--radius:22px;
     }
-
-    * { box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: linear-gradient(135deg, #eef5ff 0%, #f8fbff 45%, #eefafe 100%);
-      color: var(--text);
-      line-height: 1.65;
-    }
-
-    a { color: inherit; }
-
-    .layout {
-      display: grid;
-      grid-template-columns: 290px minmax(0, 1fr);
-      gap: 28px;
-      max-width: 1320px;
-      margin: 0 auto;
-      padding: 28px;
-    }
-
-    aside {
-      position: sticky;
-      top: 24px;
-      align-self: start;
-      background: rgba(255, 255, 255, 0.82);
-      backdrop-filter: blur(18px);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 22px;
-    }
-
-    aside h2 {
-      margin: 0 0 14px;
-      font-size: 1rem;
-      letter-spacing: 0.02em;
-      color: var(--primary-dark);
-    }
-
-    nav a {
-      display: block;
-      padding: 10px 12px;
-      margin: 4px 0;
-      border-radius: 12px;
-      text-decoration: none;
-      color: var(--muted);
-      font-size: 0.94rem;
-      transition: 0.2s ease;
-    }
-
-    nav a:hover {
-      background: #eaf2ff;
-      color: var(--primary-dark);
-      transform: translateX(3px);
-    }
-
-    main { min-width: 0; }
-
-    .hero {
-      background: radial-gradient(circle at top left, rgba(6, 182, 212, 0.22), transparent 35%), linear-gradient(135deg, #111827, #1e3a8a 58%, #0f172a);
-      color: white;
-      border-radius: 30px;
-      padding: 48px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      position: relative;
-    }
-
-    .hero::after {
-      content: "HTML";
-      position: absolute;
-      right: -20px;
-      bottom: -70px;
-      font-size: 9rem;
-      font-weight: 900;
-      color: rgba(255,255,255,0.06);
-      letter-spacing: -0.08em;
-    }
-
-    .badge {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.22);
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 0.9rem;
-      margin-bottom: 18px;
-    }
-
-    h1 {
-      margin: 0 0 16px;
-      font-size: clamp(2rem, 5vw, 4.2rem);
-      line-height: 1.03;
-      letter-spacing: -0.05em;
-      max-width: 900px;
-    }
-
-    .hero p {
-      max-width: 760px;
-      font-size: 1.15rem;
-      color: rgba(255,255,255,0.86);
-      margin: 0;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin: 26px 0;
-    }
-
-    .stat, .card, .section {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-
-    .stat { padding: 22px; }
-    .stat strong { display: block; font-size: 1.8rem; color: var(--primary-dark); line-height: 1; }
-    .stat span { color: var(--muted); font-size: 0.92rem; }
-
-    .section {
-      margin-top: 24px;
-      padding: 34px;
-    }
-
-    h2 {
-      margin: 0 0 14px;
-      font-size: clamp(1.45rem, 3vw, 2.2rem);
-      line-height: 1.12;
-      letter-spacing: -0.035em;
-    }
-
-    h3 {
-      margin: 22px 0 8px;
-      font-size: 1.2rem;
-      color: #10203e;
-    }
-
-    .lead { color: var(--muted); font-size: 1.05rem; }
-
-    .callout {
-      border-left: 5px solid var(--primary);
-      background: #eff6ff;
-      border-radius: 16px;
-      padding: 18px 20px;
-      margin: 20px 0;
-    }
-
-    .callout.success { border-color: var(--success); background: #ecfdf5; }
-    .callout.warning { border-color: var(--warning); background: #fffbeb; }
-    .callout.danger { border-color: var(--danger); background: #fef2f2; }
-
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-      margin-top: 18px;
-    }
-
-    .mini-card {
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 18px;
-    }
-
-    .mini-card h3 { margin-top: 0; }
-
-    .timeline {
-      counter-reset: step;
-      display: grid;
-      gap: 14px;
-      margin-top: 20px;
-    }
-
-    .step {
-      display: grid;
-      grid-template-columns: 52px 1fr;
-      gap: 16px;
-      align-items: start;
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 18px;
-    }
-
-    .step::before {
-      counter-increment: step;
-      content: counter(step);
-      display: grid;
-      place-items: center;
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
-      background: var(--primary);
-      color: white;
-      font-weight: 800;
-    }
-
-    .cases {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 18px;
-      margin-top: 18px;
-    }
-
-    .case {
-      position: relative;
-      padding: 22px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      background: linear-gradient(180deg, #ffffff, #f8fbff);
-      overflow: hidden;
-    }
-
-    .case .tag {
-      display: inline-block;
-      padding: 5px 10px;
-      border-radius: 999px;
-      background: #dbeafe;
-      color: var(--primary-dark);
-      font-weight: 700;
-      font-size: 0.78rem;
-      margin-bottom: 10px;
-    }
-
-    .case h3 { margin: 0 0 8px; }
-    .case p { color: var(--muted); margin: 0 0 12px; }
-
-    details {
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: #ffffff;
-      margin: 12px 0;
-      overflow: hidden;
-    }
-
-    summary {
-      cursor: pointer;
-      padding: 16px 18px;
-      font-weight: 800;
-      color: var(--primary-dark);
-      background: #f8fafc;
-    }
-
-    details div { padding: 0 18px 18px; }
-
-    code, pre {
-      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-    }
-
-    pre {
-      white-space: pre-wrap;
-      background: #0f172a;
-      color: #dbeafe;
-      padding: 18px;
-      border-radius: 16px;
-      overflow-x: auto;
-      line-height: 1.5;
-      font-size: 0.88rem;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      overflow: hidden;
-      border-radius: 16px;
-      margin-top: 18px;
-      background: white;
-    }
-
-    th, td {
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--border);
-      text-align: left;
-      vertical-align: top;
-    }
-
-    th { background: #eff6ff; color: var(--primary-dark); }
-    tr:last-child td { border-bottom: 0; }
-
-    .footer {
-      text-align: center;
-      color: var(--muted);
-      padding: 34px 10px 10px;
-    }
-
-    .pill-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    .pill {
-      background: #eef2ff;
-      color: #3730a3;
-      border: 1px solid #c7d2fe;
-      border-radius: 999px;
-      padding: 8px 12px;
-      font-size: 0.9rem;
-      font-weight: 700;
-    }
-
-    @media (max-width: 980px) {
-      .layout { grid-template-columns: 1fr; padding: 16px; }
-      aside { position: relative; top: 0; }
-      .grid, .two-col, .cases { grid-template-columns: 1fr; }
-      .hero { padding: 34px 24px; }
-      .section { padding: 24px; }
-    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(135deg,#eef5ff,#f8fbff 45%,#eefafe);color:var(--text);line-height:1.65}
+    .layout{display:grid;grid-template-columns:290px minmax(0,1fr);gap:28px;max-width:1360px;margin:0 auto;padding:28px}
+    aside{position:sticky;top:24px;align-self:start;background:rgba(255,255,255,.86);backdrop-filter:blur(18px);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
+    aside h2{margin:0 0 14px;font-size:1rem;color:#1d4ed8}
+    nav a{display:block;padding:10px 12px;margin:4px 0;border-radius:12px;text-decoration:none;color:var(--muted);font-size:.94rem}
+    nav a:hover{background:#eaf2ff;color:#1d4ed8}
+    .hero{background:radial-gradient(circle at top left,rgba(6,182,212,.24),transparent 35%),linear-gradient(135deg,#111827,#1e3a8a 58%,#0f172a);color:white;border-radius:30px;padding:48px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+    .hero:after{content:"HTML";position:absolute;right:-20px;bottom:-70px;font-size:9rem;font-weight:900;color:rgba(255,255,255,.06);letter-spacing:-.08em}
+    .badge{display:inline-flex;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:8px 12px;border-radius:999px;font-size:.9rem;margin-bottom:18px}
+    h1{margin:0 0 16px;font-size:clamp(2rem,5vw,4.2rem);line-height:1.03;letter-spacing:-.05em;max-width:940px}
+    .hero p{max-width:820px;font-size:1.15rem;color:rgba(255,255,255,.86);margin:0}
+    .section{margin-top:24px;padding:34px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+    h2{margin:0 0 14px;font-size:clamp(1.45rem,3vw,2.2rem);line-height:1.12;letter-spacing:-.035em}
+    h3{margin:22px 0 8px;font-size:1.2rem;color:#10203e}
+    .lead{color:var(--muted);font-size:1.05rem}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:22px 0}
+    .stat,.mini,.case{background:#fff;border:1px solid var(--border);border-radius:20px;padding:20px}
+    .stat strong{display:block;font-size:1.8rem;color:#1d4ed8;line-height:1}
+    .stat span,.mini p,.case p{color:var(--muted)}
+    .callout{border-left:5px solid var(--blue);background:#eff6ff;border-radius:16px;padding:18px 20px;margin:20px 0}
+    .success{border-color:var(--green);background:#ecfdf5}.warning{border-color:var(--orange);background:#fffbeb}
+    .two{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+    .cases{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:18px}
+    .tag{display:inline-block;padding:5px 10px;border-radius:999px;background:#dbeafe;color:#1d4ed8;font-weight:800;font-size:.78rem;margin-bottom:10px}
+    details{border:1px solid var(--border);border-radius:16px;background:#fff;margin:12px 0;overflow:hidden}
+    summary{cursor:pointer;padding:16px 18px;font-weight:800;color:#1d4ed8;background:#f8fafc}
+    details div{padding:0 18px 18px}
+    pre{white-space:pre-wrap;background:#0f172a;color:#dbeafe;padding:18px;border-radius:16px;overflow-x:auto;line-height:1.5;font-size:.88rem}
+    table{width:100%;border-collapse:collapse;border-radius:16px;overflow:hidden;margin-top:18px;background:#fff}
+    th,td{padding:14px 16px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+    th{background:#eff6ff;color:#1d4ed8}
+    tr:last-child td{border-bottom:0}
+    .footer{text-align:center;color:var(--muted);padding:34px 10px 10px}
+    @media(max-width:980px){.layout{grid-template-columns:1fr;padding:16px}aside{position:relative;top:0}.grid,.two,.cases{grid-template-columns:1fr}.hero{padding:34px 24px}.section{padding:24px}}
   </style>
 </head>
 <body>
-  <div class="layout">
-    <aside>
-      <h2>Navigation</h2>
-      <nav>
-        <a href="#resume">Résumé express</a>
-        <a href="#probleme">Le problème</a>
-        <a href="#solution">La solution HTML</a>
-        <a href="#raisons">Pourquoi ça marche</a>
-        <a href="#cas">Les 6 cas pratiques</a>
-        <a href="#workflow">Workflow réutilisable</a>
-        <a href="#prompts">Prompts prêts à copier</a>
-        <a href="#retenir">À retenir</a>
-      </nav>
-    </aside>
+<div class="layout">
+  <aside>
+    <h2>Navigation</h2>
+    <nav>
+      <a href="#intro">Introduction</a>
+      <a href="#idee">Idée principale</a>
+      <a href="#benefices">Bénéfices</a>
+      <a href="#exemples">Les 6 exemples</a>
+      <a href="#workflow">Workflow</a>
+      <a href="#recap">Tableau récapitulatif</a>
+      <a href="#action">Plan d’action</a>
+    </nav>
+  </aside>
 
-    <main>
-      <header class="hero">
-        <div class="badge">⚡ Astuce IA · Lisibilité · HTML autonome</div>
-        <h1>Transformer les réponses IA en pages HTML claires, lisibles et actionnables</h1>
-        <p>La vidéo explique une méthode simple : demander à une IA de formater sa réponse en document HTML autonome pour améliorer la compréhension, la navigation, le partage et le passage à l’action.</p>
-      </header>
+  <main>
+    <header class="hero" id="intro">
+      <div class="badge">⚡ QG de l’IA · Astuce pratique · HTML autonome</div>
+      <h1>Comment rendre les réponses IA plus lisibles, plus claires et plus actionnables</h1>
+      <p>Cette page résume une méthode simple : demander à ChatGPT, Claude, Gemini ou Mistral de transformer une réponse classique en document HTML autonome, moderne et structuré.</p>
+    </header>
 
-      <section id="resume" class="section">
-        <h2>Résumé express</h2>
-        <p class="lead">Le message central est simple : les IA produisent souvent de bonnes réponses, mais leur présentation reste trop textuelle. En ajoutant une consigne HTML à la fin du prompt, on obtient un document plus structuré, plus agréable à lire et plus facile à réutiliser.</p>
-        <div class="grid">
-          <div class="stat"><strong>1 phrase</strong><span>peut suffire à transformer le rendu</span></div>
-          <div class="stat"><strong>6 cas</strong><span>sont présentés dans la vidéo</span></div>
-          <div class="stat"><strong>HTML</strong><span>sert à structurer, visualiser et partager</span></div>
-        </div>
-        <div class="callout success">
-          <strong>Idée clé :</strong> la valeur ne vient pas seulement du “joli design”, mais de la meilleure organisation de l’information : titres, blocs, tableaux, couleurs, navigation, encadrés et accordéons.
-        </div>
-      </section>
+    <section class="section" id="idee">
+      <h2>L’idée principale</h2>
+      <p class="lead">Les IA donnent souvent de bonnes réponses, mais leur affichage reste parfois dense, fatigant et peu engageant. En ajoutant une consigne HTML à la fin d’un prompt, on obtient une page plus agréable à lire, mieux organisée et plus facile à partager.</p>
+      <div class="grid">
+        <div class="stat"><strong>1</strong><span>phrase peut suffire</span></div>
+        <div class="stat"><strong>6</strong><span>cas d’usage concrets</span></div>
+        <div class="stat"><strong>HTML</strong><span>pour mieux comprendre</span></div>
+      </div>
+      <div class="callout success"><strong>Formule clé :</strong> “Formate ta réponse complète sous forme d’un document HTML autonome, moderne et lisible, avec une bonne typographie, des couleurs et une navigation si nécessaire.”</div>
+    </section>
 
-      <section id="probleme" class="section">
-        <h2>Le problème : des réponses IA utiles, mais fatigantes à lire</h2>
-        <p>La vidéo part d’un constat : les outils comme ChatGPT, Claude, Gemini ou Mistral produisent des contenus riches, mais souvent présentés dans une interface très textuelle. Résultat : on scanne, on lit moins, on retient moins, on partage moins et on passe moins facilement à l’action.</p>
-        <div class="two-col">
-          <div class="mini-card">
-            <h3>Avant</h3>
-            <p>Réponse textuelle longue, paragraphes denses, tableaux basiques, lecture en diagonale, fatigue visuelle.</p>
-          </div>
-          <div class="mini-card">
-            <h3>Après</h3>
-            <p>Page HTML claire, sections visuelles, navigation, encadrés, tableaux lisibles, meilleure mémorisation.</p>
-          </div>
-        </div>
-      </section>
+    <section class="section" id="benefices">
+      <h2>Pourquoi ça change l’expérience</h2>
+      <div class="two">
+        <div class="mini"><h3>Avant</h3><p>Réponse textuelle longue, lecture en diagonale, fatigue visuelle, informations moins mémorisées.</p></div>
+        <div class="mini"><h3>Après</h3><p>Page structurée, blocs visuels, navigation, tableaux, encadrés, meilleure compréhension.</p></div>
+      </div>
+      <div class="callout">
+        <strong>Point important :</strong> le HTML ne sert pas seulement à “faire joli”. Il oblige aussi l’IA à organiser sa réponse en blocs : titres, sections, cartes, tableaux, conclusions et éléments visuels.
+      </div>
+    </section>
 
-      <section id="solution" class="section">
-        <h2>La solution : demander un document HTML autonome</h2>
-        <p>La méthode consiste à ajouter une consigne de formatage à la fin du prompt. L’IA ne répond plus seulement avec du texte : elle construit une page complète, structurée comme un mini-document web.</p>
-        <pre>Formate ta réponse complète sous forme d’un document HTML autonome, moderne et lisible, avec une bonne typographie, des couleurs et une navigation si nécessaire.</pre>
-        <div class="pill-list">
-          <span class="pill">Sommaire cliquable</span>
-          <span class="pill">Sections colorées</span>
-          <span class="pill">Tableaux visuels</span>
-          <span class="pill">Encadrés “À retenir”</span>
-          <span class="pill">Accordéons</span>
-          <span class="pill">Graphiques SVG</span>
-        </div>
-      </section>
+    <section class="section" id="exemples">
+      <h2>Les 6 exemples présentés</h2>
+      <p class="lead">Voici les 6 cas d’usage prêts à reprendre avec ta communauté.</p>
 
-      <section id="raisons" class="section">
-        <h2>Pourquoi cette méthode améliore la réponse</h2>
-        <div class="timeline">
-          <div class="step">
-            <div>
-              <h3>L’IA structure mieux sa réponse</h3>
-              <p>En générant du HTML, l’IA doit penser en blocs : titre, introduction, sections, cartes, tableaux, conclusion. Cela l’oblige à mieux organiser le contenu.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div>
-              <h3>Le rendu favorise la compréhension</h3>
-              <p>Les couleurs, espacements, titres et encadrés facilitent le scan visuel. On identifie plus vite les informations importantes.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div>
-              <h3>Le document devient partageable</h3>
-              <p>Un fichier HTML peut être téléchargé, ouvert dans un navigateur, envoyé par email ou conservé dans un dossier projet.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div>
-              <h3>Le contenu devient plus actionnable</h3>
-              <p>Une page bien conçue donne envie de lire, de revenir dessus et d’utiliser l’information dans un vrai workflow.</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <div class="cases">
+        <article class="case">
+          <span class="tag">Exemple 1</span>
+          <h3>Une seule phrase à ajouter à la fin du prompt</h3>
+          <p>Objectif : transformer une explication complexe en mini-document pédagogique.</p>
+          <details open><summary>Prompt exact</summary><div><pre>Je souhaite comprendre le concept de pré-entraînement pour les LLMs. Je veux tout savoir sur ce domaine, comprendre facilement avec des explications adaptées au grand public. Je veux comprendre ce que c’est mais aussi comment ça impacte notre utilisation des IAG.
 
-      <section id="cas" class="section">
-        <h2>Les 6 cas pratiques présentés</h2>
-        <p class="lead">Chaque cas montre comment transformer une réponse IA classique en livrable plus lisible, plus clair et plus exploitable.</p>
+Formate ta réponse complète sous forme d’un document HTML autonome, moderne et lisible, avec une bonne typographie, des couleurs et une navigation si nécessaire.</pre></div></details>
+          <details><summary>Résultat attendu</summary><div><p>Une page pédagogique avec définitions, exemples, analogies, impacts concrets et navigation.</p></div></details>
+        </article>
 
-        <div class="cases">
-          <article class="case">
-            <span class="tag">Cas 1</span>
-            <h3>Une seule phrase ajoutée au prompt</h3>
-            <p>Objectif : comprendre un sujet complexe, ici le pré-entraînement des LLMs, avec une page claire et pédagogique.</p>
-            <details><summary>Ce que le HTML apporte</summary><div><p>Une structure de cours : introduction, définitions, analogies, impacts concrets et navigation.</p></div></details>
-          </article>
+        <article class="case">
+          <span class="tag">Exemple 2</span>
+          <h3>Recherche + synthèse</h3>
+          <p>Objectif : produire une fiche de synthèse claire après une recherche web.</p>
+          <details><summary>Prompt exact</summary><div><pre>Fais une recherche sur internet et synthétise les 5 outils IA les plus utiles pour un entrepreneur ou un freelance en 2026 — ceux qui ne nécessitent aucune compétence technique. Pour chaque outil : nom, cas d’usage principal, prix, et une phrase sur pourquoi c’est pertinent aujourd’hui.
 
-          <article class="case">
-            <span class="tag">Cas 2</span>
-            <h3>Recherche + synthèse</h3>
-            <p>Objectif : synthétiser les 5 outils IA utiles pour entrepreneurs ou freelances, avec nom, usage, prix et pertinence.</p>
-            <details><summary>Ce que le HTML apporte</summary><div><p>Des sections colorées par outil, un tableau récapitulatif et un encadré final “À retenir”.</p></div></details>
-          </article>
+Présente le tout sous forme d’un document HTML autonome avec : un titre accrocheur, des sections colorées par outil, un tableau récapitulatif (nom / usage / prix / score d’accessibilité), et un encadré « À retenir » en bas de page.</pre></div></details>
+          <details><summary>Résultat attendu</summary><div><p>Une page avec une section par outil, un tableau final et une synthèse actionnable.</p></div></details>
+        </article>
 
-          <article class="case">
-            <span class="tag">Cas 3</span>
-            <h3>Tableau comparatif</h3>
-            <p>Objectif : comparer ChatGPT, Claude et Gemini selon des critères concrets : rédaction, documents, web, intégrations, prix et prise en main.</p>
-            <details><summary>Ce que le HTML apporte</summary><div><p>Un tableau visuel avec code couleur, une synthèse par outil et une recommandation selon le profil utilisateur.</p></div></details>
-          </article>
+        <article class="case">
+          <span class="tag">Exemple 3</span>
+          <h3>Tableau comparatif</h3>
+          <p>Objectif : comparer plusieurs solutions de manière visuelle et décisionnelle.</p>
+          <details><summary>Prompt exact</summary><div><pre>Fais une recherche sur internet et compare ChatGPT, Claude et Gemini sur ces 6 critères : qualité de rédaction en français, capacité d’analyse de documents, accès web en temps réel, intégration dans des outils tiers, prix du plan payant, et facilité de prise en main pour un non-développeur.
 
-          <article class="case">
-            <span class="tag">Cas 4</span>
-            <h3>Guide, tuto ou cours</h3>
-            <p>Objectif : créer un guide étape par étape, par exemple pour mettre en place une veille IA hebdomadaire automatisée.</p>
-            <details><summary>Ce que le HTML apporte</summary><div><p>Des étapes numérotées, des conseils, des erreurs fréquentes, une barre de progression et un tableau des outils.</p></div></details>
-          </article>
+Présente le résultat sous forme d’un document HTML avec : un tableau de comparaison visuel (code couleur vert = excellent / orange = moyen / rouge = limité par critère), un paragraphe de synthèse par outil, et une conclusion encadrée avec la recommandation selon le profil utilisateur.</pre></div></details>
+          <details><summary>Résultat attendu</summary><div><p>Un tableau lisible avec codes couleur, synthèse par outil et recommandation finale.</p></div></details>
+        </article>
 
-          <article class="case">
-            <span class="tag">Cas 5</span>
-            <h3>Rapport complet / dashboard</h3>
-            <p>Objectif : produire un rapport structuré sur l’adoption de l’IA dans les PME et chez les indépendants.</p>
-            <details><summary>Ce que le HTML apporte</summary><div><p>Résumé exécutif, graphiques SVG, sections repliables, bouton de copie et sources en bas de page.</p></div></details>
-          </article>
+        <article class="case">
+          <span class="tag">Exemple 4</span>
+          <h3>Guide, tuto ou cours</h3>
+          <p>Objectif : transformer une procédure en guide pratique étape par étape.</p>
+          <details><summary>Prompt exact</summary><div><pre>Explique comment mettre en place une veille IA hebdomadaire automatisée sans aucune compétence technique, en utilisant uniquement des outils gratuits ou freemium disponibles en 2026. Appuie-toi sur des sources récentes trouvées sur internet.
 
-          <article class="case">
-            <span class="tag">Cas 6</span>
-            <h3>Vidéo YouTube transformée en page HTML</h3>
-            <p>Objectif : convertir une vidéo ou sa transcription en page structurée pour comprendre chaque actualité partagée.</p>
-            <details><summary>Ce que le HTML apporte</summary><div><p>Chapitrage, synthèse par actualité, navigation interne, points clés et meilleure exploitation de la vidéo.</p></div></details>
-          </article>
-        </div>
-      </section>
+Présente le résultat sous forme d’un document HTML avec : des étapes numérotées accompagnées d’une icône texte (ex. “Étape 1 →”), un encadré vert “Conseil” et un encadré rouge “Erreur fréquente” à chaque étape clé, une barre de progression visuelle en haut de page, et un récapitulatif des outils utilisés en bas sous forme de tableau.</pre></div></details>
+          <details><summary>Résultat attendu</summary><div><p>Un tuto structuré avec progression, conseils, erreurs fréquentes et tableau des outils.</p></div></details>
+        </article>
 
-      <section id="workflow" class="section">
-        <h2>Workflow réutilisable</h2>
-        <div class="timeline">
-          <div class="step"><div><h3>Définir le livrable attendu</h3><p>Fiche de synthèse, guide, tableau, rapport, dashboard, page issue d’une vidéo.</p></div></div>
-          <div class="step"><div><h3>Décrire les blocs nécessaires</h3><p>Sommaire, cartes, tableaux, encadrés, graphiques, FAQ, conclusion, sources.</p></div></div>
-          <div class="step"><div><h3>Ajouter la contrainte HTML autonome</h3><p>Demander un fichier HTML complet avec CSS intégré, responsive, lisible et partageable.</p></div></div>
-          <div class="step"><div><h3>Vérifier la fidélité du contenu</h3><p>Contrôler que l’IA n’a pas ajouté d’informations non présentes, surtout pour les vidéos ou transcriptions.</p></div></div>
-          <div class="step"><div><h3>Réutiliser le template</h3><p>Adapter la structure selon le cas : veille, cours, comparatif, rapport, vidéo, synthèse business.</p></div></div>
-        </div>
-      </section>
+        <article class="case">
+          <span class="tag">Exemple 5</span>
+          <h3>Rapport complet</h3>
+          <p>Objectif : transformer une recherche longue en rapport lisible et interactif.</p>
+          <details><summary>Prompt exact</summary><div><pre>Fais une recherche sur internet et produis un rapport sur l’état de l’adoption de l’IA dans les PME et chez les indépendants en 2026 : gains de productivité mesurés, tâches les plus automatisées, freins à l’adoption, et prévisions pour les 12 prochains mois.
 
-      <section id="prompts" class="section">
-        <h2>Prompts prêts à copier</h2>
+Présente le résultat sous forme d’un document HTML complet avec : un résumé exécutif de 3 phrases en haut, 2 ou 3 graphiques en barres SVG pour les données chiffrées clés, des sections repliables (accordéon) pour les détails de chaque partie, un bouton “Copier les points clés” qui copie les 5 chiffres essentiels dans le presse-papier, et les sources cliquables en bas de page.</pre></div></details>
+          <details><summary>Résultat attendu</summary><div><p>Un mini-dashboard avec résumé, graphiques, accordéons, bouton de copie et sources.</p></div></details>
+        </article>
 
-        <details open>
-          <summary>Prompt générique</summary>
-          <div>
-            <pre>Transforme le contenu ci-dessous en un document HTML autonome, moderne, responsive et lisible.
+        <article class="case">
+          <span class="tag">Exemple 6</span>
+          <h3>Vidéo YouTube</h3>
+          <p>Objectif : convertir une vidéo ou sa transcription en page de compréhension.</p>
+          <details><summary>Prompt exact</summary><div><pre>Consulte cette vidéo YouTube : https://www.youtube.com/watch?v=VMUDRIYRoQs&t=1369s
 
-Objectif : faciliter la compréhension, la navigation et le passage à l’action.
+Transforme le contenu en une page HTML optimisée pour la compréhension.
+Optimise la lisibilité grâce à la police, le design et la navigation. Cette page HTML doit me permettre de comprendre chaque actu partagée.</pre></div></details>
+          <details><summary>Résultat attendu</summary><div><p>Une page avec chapitrage, résumé, sections par actualité, points clés et navigation.</p></div></details>
+        </article>
+      </div>
+    </section>
 
-Structure attendue :
-- titre clair ;
-- résumé exécutif ;
-- sommaire cliquable ;
-- sections thématiques ;
-- encadrés “À retenir” ;
-- tableaux si utile ;
-- conclusion actionnable.
+    <section class="section" id="workflow">
+      <h2>Workflow simple à appliquer</h2>
+      <table>
+        <thead><tr><th>Étape</th><th>Action</th><th>Objectif</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Définir le contenu à transformer</td><td>Sujet, recherche, tableau, rapport, vidéo ou transcription</td></tr>
+          <tr><td>2</td><td>Préciser le format HTML voulu</td><td>Sommaire, sections, cartes, tableaux, accordéons, graphiques</td></tr>
+          <tr><td>3</td><td>Demander un document autonome</td><td>HTML complet avec CSS intégré, lisible et responsive</td></tr>
+          <tr><td>4</td><td>Contrôler la fidélité</td><td>Vérifier que rien n’a été inventé</td></tr>
+          <tr><td>5</td><td>Partager ou archiver</td><td>Email, communauté, dossier projet, navigateur</td></tr>
+        </tbody>
+      </table>
+    </section>
 
-Contraintes :
-- HTML complet avec CSS intégré ;
-- aucune invention ;
-- reformulation claire ;
-- design sobre et professionnel ;
-- navigation fluide.</pre>
-          </div>
-        </details>
+    <section class="section" id="recap">
+      <h2>Tableau récapitulatif</h2>
+      <table>
+        <thead><tr><th>Cas</th><th>Idéal pour</th><th>Éléments HTML utiles</th></tr></thead>
+        <tbody>
+          <tr><td>Phrase ajoutée</td><td>Comprendre un concept</td><td>Navigation, définitions, cartes, analogies</td></tr>
+          <tr><td>Recherche + synthèse</td><td>Veille rapide</td><td>Sections colorées, tableau, encadré final</td></tr>
+          <tr><td>Comparatif</td><td>Décision entre outils</td><td>Code couleur, scores, recommandation</td></tr>
+          <tr><td>Guide / tuto</td><td>Apprendre et appliquer</td><td>Étapes, conseils, erreurs fréquentes</td></tr>
+          <tr><td>Rapport</td><td>Analyse complète</td><td>Graphiques, accordéons, bouton copier</td></tr>
+          <tr><td>Vidéo YouTube</td><td>Comprendre une vidéo</td><td>Chapitrage, sections par actu, résumé</td></tr>
+        </tbody>
+      </table>
+    </section>
 
-        <details>
-          <summary>Prompt spécial vidéo YouTube / transcription</summary>
-          <div>
-            <pre>À partir de cette transcription, crée une page HTML autonome optimisée pour la compréhension.
+    <section class="section" id="action">
+      <h2>Plan d’action pour le QG de l’IA</h2>
+      <div class="callout success">
+        <strong>À tester immédiatement :</strong> reprendre un prompt déjà utilisé, ajouter la phrase HTML à la fin, comparer l’avant/après, puis conserver le meilleur format comme modèle personnel.
+      </div>
+      <pre>Modèle court à copier :
 
-Objectif : me permettre de comprendre rapidement chaque actualité, idée ou cas partagé dans la vidéo.
+Présente ta réponse sous forme d’un document HTML autonome, moderne, responsive et lisible, avec une bonne typographie, des couleurs sobres, une navigation claire, des sections structurées, des encadrés “À retenir” et un tableau récapitulatif si utile.</pre>
+      <div class="callout warning">
+        <strong>Vigilance :</strong> pour les vidéos YouTube, fournir la transcription si l’outil n’a pas réellement accès à la vidéo. Sinon, risque d’informations manquantes ou inventées.
+      </div>
+    </section>
 
-Structure attendue :
-- titre clair ;
-- résumé de la vidéo ;
-- sommaire cliquable ;
-- une section par actu / idée / cas ;
-- pour chaque section : contexte, explication simple, point clé, impact pratique ;
-- tableau récapitulatif ;
-- encadré “À retenir” ;
-- plan d’action final.
-
-Contraintes :
-- ne rien inventer ;
-- utiliser uniquement la transcription fournie ;
-- HTML complet avec CSS intégré ;
-- design moderne, lisible, responsive ;
-- navigation claire.</pre>
-          </div>
-        </details>
-      </section>
-
-      <section id="retenir" class="section">
-        <h2>À retenir</h2>
-        <div class="callout success">
-          <strong>La technique :</strong> ajouter une demande de sortie en HTML autonome à la fin d’un prompt pour transformer une réponse IA en document plus clair, plus visuel et plus exploitable.
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Usage</th>
-              <th>Format HTML recommandé</th>
-              <th>Bénéfice principal</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>Comprendre un concept</td><td>Mini-cours avec sections et analogies</td><td>Apprentissage plus fluide</td></tr>
-            <tr><td>Recherche / synthèse</td><td>Cartes + tableau + encadré</td><td>Lecture rapide</td></tr>
-            <tr><td>Comparatif</td><td>Tableau coloré + recommandation</td><td>Décision plus simple</td></tr>
-            <tr><td>Guide / tuto</td><td>Étapes + conseils + erreurs</td><td>Passage à l’action</td></tr>
-            <tr><td>Rapport</td><td>Dashboard + graphiques + accordéons</td><td>Analyse plus claire</td></tr>
-            <tr><td>Vidéo YouTube</td><td>Chapitrage + synthèse par actu</td><td>Meilleure exploitation du contenu</td></tr>
-          </tbody>
-        </table>
-        <div class="callout warning">
-          <strong>Point de vigilance :</strong> pour une vidéo YouTube, le résultat est fiable uniquement si l’IA a réellement accès à la vidéo, à l’audio ou à une transcription complète. Sinon, il faut fournir la transcription ou les sous-titres.
-        </div>
-      </section>
-
-      <p class="footer">Document HTML autonome généré à partir de la transcription et des cas pratiques fournis.</p>
-    </main>
-  </div>
+    <p class="footer">Page conçue pour partager l’astuce avec une communauté IA de manière claire, pratique et réutilisable.</p>
+  </main>
+</div>
 </body>
 </html>
